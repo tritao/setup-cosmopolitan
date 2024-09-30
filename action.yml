@@ -1,19 +1,16 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Setup Cosmospolitan toolchain'
+description:
+  'GitHub action to setup Cosmospolitan toolchain on Linux, Windows and macOS.'
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  version:
+    description: 'Cosmospolitan toolchain version'
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
+  path:
+    description: 'Toolchain path'
+    required: false
+    default: '.cosmopolitan'
 
 runs:
-  using: node20
-  main: dist/index.js
+  using: 'node20'
+  main: 'dist/index.js'
