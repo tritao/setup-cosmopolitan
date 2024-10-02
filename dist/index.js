@@ -28811,11 +28811,11 @@ async function run() {
       throw new Error('Path must be relative to the workspace')
     }
 
-    const cosmopolitanCachedDir = tc.find('cosmocc', version)
-    if (cosmopolitanCachedDir !== undefined) {
-      core.addPath(cosmopolitanCachedDir)
-      return
-    }
+    // const cachedDir = tc.find('cosmocc', version)
+    // if (cachedDir !== undefined) {
+    //   core.addPath(path.join(cachedDir, 'bin'))
+    //   return
+    // }
 
     const urlBase = 'https://cosmo.zip/pub/cosmocc/'
     const url =
@@ -28826,7 +28826,7 @@ async function run() {
     const cosmopolitanPath = path.join(process.env.GITHUB_WORKSPACE, userPath)
     await tc.extractZip(cosmopolitan, cosmopolitanPath)
     const cachedPath = await tc.cacheDir(cosmopolitanPath, 'cosmocc', version)
-    core.addPath(cachedPath)
+    core.addPath(path.join(cachedPath, 'bin'))
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
