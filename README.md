@@ -13,7 +13,7 @@ To setup it up, add a step to your GitHub workflow configuration :
 ```
 
 Cosmopolitan toolchain is added to the path so you can run any cosmos commands
-after. For example, to compile your project using `cosmocc``, add a step :
+after. For example, to compile your project using `cosmocc`, add a step :
 
 ```yaml
 - name: Compile my project
@@ -21,5 +21,5 @@ after. For example, to compile your project using `cosmocc``, add a step :
     - cosmocc -o hello hello.c
 ```
 
-By default, Cosmopolitan toolchain is installed in `.cosmos` directory relative
-to the GitHub workspace. You can optionnally change it using the `path` input.
+By default, Cosmopolitan toolchain is installed in `.cosmopolitan` directory relative
+to the GitHub workspace. You can optionally change it using the `path` input.
