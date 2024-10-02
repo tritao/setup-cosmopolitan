@@ -28825,7 +28825,7 @@ async function run() {
     const cosmopolitan = await tc.downloadTool(url)
     const cosmopolitanPath = path.join(process.env.GITHUB_WORKSPACE, userPath)
     await tc.extractZip(cosmopolitan, cosmopolitanPath)
-    const cachedPath = await tc.cacheDir(cosmopolitanPath, 'cosmocc', version)
+    const cachedPath = await tc.cacheDir(path.join(cosmopolitanPath, 'bin'), 'cosmocc', version)
     core.addPath(cachedPath)
   } catch (error) {
     // Fail the workflow run if an error occurs

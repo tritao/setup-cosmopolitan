@@ -55,3 +55,7 @@ jobs:
         uses: ./
         with:
           version: ${{ env.COSMOPOLITAN_VERSION }}
+
+      - name: Test
+        id: cosmocc
+        run: cosmocc --version
