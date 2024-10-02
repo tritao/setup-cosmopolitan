@@ -21,5 +21,6 @@ after. For example, to compile your project using `cosmocc`, add a step :
     - cosmocc -o hello hello.c
 ```
 
-By default, Cosmopolitan toolchain is installed in `.cosmopolitan` directory relative
-to the GitHub workspace. You can optionally change it using the `path` input.
+By default, Cosmopolitan toolchain is installed in `.cosmopolitan` directory
+relative to the GitHub workspace. You can optionally change it using the `path`
+input.

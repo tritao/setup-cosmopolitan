@@ -4,6 +4,11 @@ const tc = require('@actions/tool-cache')
 
 const fs = require('fs')
 const path = require('path')
+const { exec } = require('child_process')
+const https = require('https')
+
+const apeInstallUrl =
+  'https://raw.githubusercontent.com/jart/cosmopolitan/master/ape/apeinstall.sh'
 
 /**
  * The main function for the action.
@@ -21,6 +26,7 @@ async function run() {
     const cachedDir = tc.find('cosmocc', version)
     if (fs.existsSync(cachedDir)) {
       core.addPath(path.join(cachedDir, 'bin'))
+      await install(cachedDir)
       return
     }
 
@@ -30,6 +36,7 @@ async function run() {
     const cacheKeyId = await cache.restoreCache([cosmopolitanPath], cacheKey)
     if (cacheKeyId !== undefined) {
       core.addPath(path.join(cosmopolitanPath, 'bin'))
+      await install(cosmopolitanPath)
       return
     }
 
@@ -44,10 +51,50 @@ async function run() {
 
     const cachedPath = await tc.cacheDir(cosmopolitanPath, 'cosmocc', version)
     const cacheId = await cache.saveCache([cosmopolitanPath], cacheKey)
+
+    await install(cachedPath)
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
   }
+}
+
+const downloadScript = async (url, destination) => {
+  return new Promise((resolve, reject) => {
+    const file = fs.createWriteStream(destination)
+    https
+      .get(url, response => {
+        response.pipe(file)
+        file.on('finish', () => {
+          file.close(() => resolve(destination))
+        })
+      })
+      .on('error', err => {
+        fs.unlink(destination)
+        reject(err.message)
+      })
+  })
+}
+
+async function install(cosmopolitanPath) {
+  https.get
+  await downloadScript(apeInstallUrl, 'apeinstall.sh')
+
+  fs.chmodSync('apeinstall.sh', 0o755)
+
+  exec(
+    `sudo sh -c "COSMO=${cosmopolitanPath} ./apeinstall.sh"`,
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing script: ${error}`)
+        return
+      }
+      if (stderr) {
+        console.error(`Script stderr: ${stderr}`)
+      }
+      console.log(`Script output: ${stdout}`)
+    }
+  )
 }
 
 module.exports = {
