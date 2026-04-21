@@ -1,11 +1,11 @@
-const cache = require('@actions/cache')
-const core = require('@actions/core')
-const tc = require('@actions/tool-cache')
+import * as cache from '@actions/cache'
+import * as core from '@actions/core'
+import * as tc from '@actions/tool-cache'
 
-const fs = require('fs')
-const path = require('path')
-const { exec } = require('child_process')
-const https = require('https')
+import fs from 'fs'
+import path from 'path'
+import { exec } from 'child_process'
+import https from 'https'
 
 const apeInstallUrl =
   'https://raw.githubusercontent.com/jart/cosmopolitan/master/ape/apeinstall.sh'
@@ -50,7 +50,7 @@ async function run() {
     core.addPath(path.join(cosmopolitanPath, 'bin'))
 
     const cachedPath = await tc.cacheDir(cosmopolitanPath, 'cosmocc', version)
-    const cacheId = await cache.saveCache([cosmopolitanPath], cacheKey)
+    await cache.saveCache([cosmopolitanPath], cacheKey)
 
     await install(cachedPath)
   } catch (error) {
@@ -97,6 +97,4 @@ async function install(cosmopolitanPath) {
   )
 }
 
-module.exports = {
-  run
-}
+export { run }
